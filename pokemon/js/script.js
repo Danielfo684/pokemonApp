@@ -1,6 +1,6 @@
 (function () {
 
-    let tabla = document.getElementById('tablaPokemon');
+    let tabla = document.getElementById('tablaProducto');
 
     if(tabla) {
         tabla.addEventListener('click', clickTable);

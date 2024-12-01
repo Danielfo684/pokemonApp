@@ -1,45 +1,102 @@
 <?php
 
-// Control de sesión
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 if (!isset($_SESSION['user'])) {
-    header('Location:.');
+    header('Location: .'); // Redirigir a la página principal si no está autenticado
     exit;
 }
 
-// Lectura de datos, continuación del hack
-$level = '';
-$name = '';
-$evolution = '';
-if (isset($_SESSION['old']['name'])) {
-    $name = $_SESSION['old']['name'];
-    unset($_SESSION['old']['name']);
-}
-if (isset($_SESSION['old']['level'])) {
-    $level = $_SESSION['old']['level'];
-    unset($_SESSION['old']['level']);
+try {
+    $connection = new \PDO(
+        'mysql:host=localhost;dbname=productdatabase',
+        'productuser',
+        'productpassword',
+        array(
+            PDO::ATTR_PERSISTENT => true,
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8'
+        )
+    );
+} catch (PDOException $e) {
+    header('Location: .?op=errorconnection&result=0'); // Redirigir a la página principal si hay un error de conexión
+    exit;
 }
 
-if (isset($_SESSION['old']['evolution'])) {
-    $evolution = $_SESSION['old']['evolution'];
-    unset($_SESSION['old']['evolution']);
+$resultado = 0;
+$url = 'create.php?op=insertpokemon&result=' . $resultado;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verificar que el método sea POST
+    $nombre = trim($_POST['nombre']);
+    $peso = $_POST['peso'];
+    $altura = $_POST['altura'];
+    $tipo = trim($_POST['tipo']);
+    $numero = $_POST['numero'];
+    
+    $ok = true;
+
+    // Validación de los datos
+    if (strlen($nombre) < 2 || strlen($nombre) > 100) {
+        $ok = false;
+    }
+    if (!(is_numeric($peso) && $peso >= 0 && $peso <= 1000)) {
+        $ok = false;
+    }
+    if (!(is_numeric($altura) && $altura >= 0 && $altura <= 100)) {
+        $ok = false;
+    }
+    if (strlen($tipo) < 2 || strlen($tipo) > 50) {
+        $ok = false;
+    }
+    if (!(is_numeric($numero) && $numero >= 1 && $numero <= 10000)) {
+        $ok = false;
+    }
+
+    if ($ok) {
+        $sql = 'INSERT INTO pokemon (nombre, peso, altura, tipo, numero) VALUES (:nombre, :peso, :altura, :tipo, :numero)';
+        $sentence = $connection->prepare($sql);
+        $parameters = [
+            'nombre' => $nombre, 
+            'peso' => $peso, 
+            'altura' => $altura, 
+            'tipo' => $tipo, 
+            'numero' => $numero
+        ];
+
+        foreach ($parameters as $nombreParametro => $valorParametro) {
+            $sentence->bindValue($nombreParametro, $valorParametro);
+        }
+
+        try {
+            $sentence->execute();
+            $resultado = $connection->lastInsertId();
+            $url = 'index.php?op=insertpokemon&result=' . $resultado; // Redirigir a index.php después de la inserción
+        } catch (PDOException $e) {
+            // Manejo de errores opcional
+            $url = 'create.php?op=insertpokemon&result=0'; // Redirigir con error
+        }
+    } else {
+        $url = 'create.php?op=validation&result=0'; // Redirigir si hay error de validación
+    }
+    header('Location: ' . $url); // Realizar la redirección
+    exit; // Asegúrate de usar exit después de redirigir
 }
+
+// Si se llega a este punto, significa que no se envió el formulario, se debe mostrar el formulario
 ?>
+
 <!doctype html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Pokemon</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Crear Pokémon</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-
 <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="..">Pokemon</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="..">dwes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse">
@@ -56,61 +113,49 @@ if (isset($_SESSION['old']['evolution'])) {
     <main role="main">
         <div class="jumbotron">
             <div class="container">
-                <h4 class="display-4">pokemons</h4>
+                <h4 class="display-4">Crear Pokémon</h4>
             </div>
         </div>
         <div class="container">
-            <?php
-            // isset comprueba si algo llega o no
-            if (isset($_GET['op']) && isset($_GET['result'])) {
-                $type = 'primary';
-                if ($_GET['result'] > 0) {
-                    ?>
-                    <div class="alert alert-primary" role="alert">
-                        result: <?= $_GET['op'] . ' ' . $_GET['result'] ?>
-                    </div>
-                    <?php
-                } else {
-                    ?>
-                    <div class="alert alert-danger" role="alert">
-                        result: <?= $_GET['op'] . ' ' . $_GET['result'] ?>
-                    </div>
-                    <?php
-                }
-            }
-            ?>
+            <?php if (isset($_GET['op'])): ?>
+                <div class="alert alert-danger" role="alert">
+                    Error: <?= htmlspecialchars($_GET['op']) ?> <!-- Muestra errores de manera segura -->
+                </div>
+            <?php endif; ?>
             <div>
-                <form action="store.php" method="post">
+                <form action="create.php" method="post">
                     <div class="form-group">
-                        <label for="name">pokemon name</label>
-                        <input value="<?= $name ?>" required type="text" class="form-control" id="name" name="name"
-                            placeholder="pokemon name">
+                        <label for="nombre">Nombre del Pokémon</label>
+                        <input required type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del Pokémon">
                     </div>
                     <div class="form-group">
-                        <label for="level">pokemon level</label>
-                        <input value="<?= $level ?>" required type="number" step="0.001" class="form-control" id="level"
-                            name="level" placeholder="pokemon level">
+                        <label for="peso">Peso (kg)</label>
+                        <input required type="number" step="0.01" class="form-control" id="peso" name="peso" placeholder="Peso">
                     </div>
                     <div class="form-group">
-                        <label for="evolution">pokemon evolution</label>
-                        <input value="<?= $evolution ?>" required type="number" class="form-control" id="evolution"
-                            name="evolution" placeholder="pokemon evolution">
+                        <label for="altura">Altura (m)</label>
+                        <input required type="number" step="0.01" class="form-control" id="altura" name="altura" placeholder="Altura">
                     </div>
-                    <button type="submit" class="btn btn-primary">add</button>
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <input required type="text" class="form-control" id="tipo" name="tipo" placeholder="Tipo">
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número del Pokémon</label>
+                        <input required type="number" class="form-control" id="numero" name="numero" placeholder="Número del Pokémon">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
                 </form>
             </div>
             <hr>
         </div>
     </main>
     <footer class="container">
-        <p>&copy; IZV 2024. Práctica PhP</p>
+        <p>&copy; IZV 2024</p>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>
+
+
