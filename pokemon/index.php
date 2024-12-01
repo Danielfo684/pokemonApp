@@ -92,6 +92,9 @@ try {
                             <th>id</th>
                             <th>name</th>
                             <th>level</th>
+                            <th>weight</th>
+                            <th>height</th>
+                            <th>ptype</th>
                             <th>evolution</th>
                             <?php
                             if(isset($_SESSION['user'])) {
@@ -112,6 +115,9 @@ try {
                                     <td><?php echo $fila['id']; ?></td>
                                     <td><?= $fila['name']; ?></td>
                                     <td><?= $fila['level']; ?></td>
+                                    <td><?= $fila['weight']; ?></td>
+                                    <td><?= $fila['height']; ?></td>
+                                    <td><?= $fila['ptype']; ?></td>
                                     <td><?= $fila['evolution']; ?></td>
                                     <?php
                                     //if(isset($_SESSION['user'])) {
