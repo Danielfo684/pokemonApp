@@ -1,20 +1,23 @@
-create database productdatabase
+create database pokemondatabase
     default character set utf8
     collate utf8_unicode_ci;
 
-use productdatabase;
+use pokemondatabase;
 
-create table product (
-  id bigint(20) not null auto_increment primary key,
-  name varchar(100) not null unique,
-  price decimal(9,2) not null
-) engine=innodb default charset=utf8 collate=utf8_unicode_ci;
+create table pokemon (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    weight FLOAT NOT NULL,
+    height FLOAT NOT NULL,
+    type ENUM('water', 'ground', 'rock', 'fire', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy', 'steel', 'fighting', 'poison', 'bug', 'ghost', 'flying') NOT NULL,
+    evolution INT DEFAULT NULL,
+); engine=innodb default charset=utf8 collate=utf8_unicode_ci;
 
-create user productuser@localhost
-    identified by 'productpassword';
+create user pokemonuser@localhost
+    identified by 'root';
 
 grant all
-    on productdatabase.*
-    to productuser@localhost;
+    on pokemondatabase.*
+    to pokemonuser@localhost;
 
 flush privileges;

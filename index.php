@@ -5,12 +5,12 @@ session_start();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>dwes</title>
+        <title>PokemonApp</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="./">dwes</a>
+            <a class="navbar-brand" href="./">PokemonApp</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -20,7 +20,7 @@ session_start();
                         <a class="nav-link" href="./">home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="product">pokemon</a> 
+                        <a class="nav-link" href="./pokemon">pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -28,12 +28,12 @@ session_start();
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">Main</h4>
+                    <h4 class="display-4">Home</h4>
                 </div>
             </div>
             <div class="container">
                 <?php
-                if (isset($_GET['op']) && isset($_GET['result'])) {
+                if(isset($_GET['op']) && isset($_GET['result'])) {
                     ?>
                     <div class="alert alert-primary" role="alert">
                         result: <?= $_GET['op'] . ' ' . $_GET['result'] ?>
@@ -42,23 +42,24 @@ session_start();
                 }
                 ?>
                 <div class="row">
-                    <h3>Pokemons, etc.</h3>
+                    <h3>pokemons, etc.</h3>
                 </div>
                 <div class="row">
                     <?php
-                    if (isset($_SESSION['user'])) {
+                    if(isset($_SESSION['user'])) {
                         ?>
-                        <a href="user/logout.php" class="btn btn-success">Log out</a>
+                        <a href="user/logout.php" class="btn btn-success">log out</a>
                         <?php
                     } else {
                         ?>
-                        <a href="user/login.php?user=even" class="btn btn-success">Even log in</a>
-                        <a href="user/login.php?user=odd" class="btn btn-success">Odd log in</a>
+                        <a href="user/login.php?user=even" class="btn btn-success">pares log in</a>
+                        &nbsp;
+                        <a href="user/login.php?user=odd" class="btn btn-success">impares log in</a>
                         <?php
                     }
                     ?>
                     &nbsp;
-                    <a href="product" class="btn btn-success">pokemons</a>
+                    <a href="pokemon" class="btn btn-success">pokemons</a>
                 </div>
                 <hr>
             </div>

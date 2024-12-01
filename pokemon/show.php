@@ -1,50 +1,55 @@
 <?php
 try {
     $connection = new \PDO(
-      'mysql:host=localhost;dbname=productdatabase',
-      'productuser',
-      'productpassword',
-      array(
-        PDO::ATTR_PERSISTENT => true,
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
+        'mysql:host=localhost;dbname=pokemondatabase',
+        'pokemonuser',
+        'root',
+        array(
+            PDO::ATTR_PERSISTENT => true,
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8'
+        )
     );
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     echo 'no connection';
     exit;
 }
-if(isset($_GET['id'])) {
+
+if (isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
     echo 'no id';
     exit;
 }
-$sql = 'select * from pokemon where id = :id';
+
+$sql = 'SELECT * FROM pokemon WHERE id = :id';
 $sentence = $connection->prepare($sql);
 $parameters = ['id' => $id];
-foreach($parameters as $nombreParametro => $valorParametro) {
+foreach ($parameters as $nombreParametro => $valorParametro) {
     $sentence->bindValue($nombreParametro, $valorParametro);
 }
-if(!$sentence->execute()){
+
+if (!$sentence->execute()) {
     echo 'no sql';
     exit;
 }
-$sentence->execute();
-if(!$fila = $sentence->fetch()) {
+
+if (!$fila = $sentence->fetch(PDO::FETCH_ASSOC)) {
     echo 'no data';
     exit;
 }
+
 $connection = null;
 ?>
 <!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>dwes</title>
+        <title>PokemonApp</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="..">dwes</a>
+            <a class="navbar-brand" href="..">PokemonApp</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -62,40 +67,44 @@ $connection = null;
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">pokemons</h4>
+                    <h4 class="display-4">Pokémon Details</h4>
                 </div>
             </div>
             <div class="container">
                 <div>
                     <div class="form-group">
-                        pokemon id #:
-                        <?= $fila['id'] ?>
+                        Pokémon ID #:
+                        <?= htmlspecialchars($fila['id']) ?>
                     </div>
                     <div class="form-group">
-                        pokemon nombre:
-                        <?= $fila['nombre'] ?>
+                        Pokémon Name:
+                        <?= htmlspecialchars($fila['name']) ?>
                     </div>
                     <div class="form-group">
-                        pokemon peso:
-                        <?= $fila['peso'] ?>
+                        Pokémon Weight:
+                        <?= htmlspecialchars($fila['weight']) ?>
                     </div>
                     <div class="form-group">
-                        pokemon tipo:
-                        <?= $fila['tipo'] ?>
+                        Pokémon Height:
+                        <?= htmlspecialchars($fila['height']) ?>
                     </div>
                     <div class="form-group">
-                        pokemon numero:
-                        <?= $fila['numero'] ?>
+                        Pokémon Type:
+                        <?= htmlspecialchars($fila['type']) ?>
                     </div>
                     <div class="form-group">
-                        <a href="./">back</a>
+                        Pokémon Evolution:
+                        <?= htmlspecialchars($fila['evolution']) ?>
+                    </div>
+                    <div class="form-group">
+                        <a href="./">Back</a>
                     </div>
                 </div>
                 <hr>
             </div>
         </main>
         <footer class="container">
-            <p>&copy; IZV 2024</p>
+            <p>&copy;Daniel Fontalva</p>
         </footer>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
