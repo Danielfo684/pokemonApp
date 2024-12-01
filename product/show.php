@@ -1,40 +1,46 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 try {
-    $connection = new \PDO(
-        'mysql:host=localhost;dbname=pokemondatabase',
-        'pokemonuser2',
-        'root',
-        array(
-            PDO::ATTR_PERSISTENT => true,
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8'
-        )
+    $connection = new PDO(
+      'mysql:host=localhost;dbname=pokemons',
+      'pokeuser',
+      'Pokepassword1234#',
+     
+      array(
+        PDO::ATTR_PERSISTENT => true,
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
+        
     );
-} catch (PDOException $e) {
-    echo 'no connection';
+} catch(PDOException $e) {
+    header('Location:..');
     exit;
 }
-
-if (isset($_GET['id'])) {
+if(isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
-    echo 'no id';
+    $url = '.?op=showproduct&result=noid';
+    header('Location: ' . $url);
     exit;
 }
-
-$sql = 'SELECT * FROM pokemon WHERE id = :id';
+$sql = 'select * from pokemon where id = :id';
 $sentence = $connection->prepare($sql);
 $parameters = ['id' => $id];
-foreach ($parameters as $nombreParametro => $valorParametro) {
+foreach($parameters as $nombreParametro => $valorParametro) {
     $sentence->bindValue($nombreParametro, $valorParametro);
 }
-
-if (!$sentence->execute()) {
-    echo 'no sql';
+try {
+    $sentence->execute();
+} catch(PDOException $e) {
+    $url = '.?op=showproduct&result=nosql';
+    header('Location: ' . $url);
     exit;
 }
 
-if (!$fila = $sentence->fetch(PDO::FETCH_ASSOC)) {
-    echo 'no data';
+if(!$fila = $sentence->fetch()) {
+    $url = '.?op=showproduct&result=nofetch';
+    header('Location: ' . $url);
     exit;
 }
 
@@ -44,12 +50,12 @@ $connection = null;
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>PokemonApp</title>
+        <title>dwes</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="..">PokemonApp</a>
+            <a class="navbar-brand" href="..">dwes</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,7 +65,7 @@ $connection = null;
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">pokemon</a>
+                        <a class="nav-link" href="./">product</a>
                     </li>
                 </ul>
             </div>
@@ -67,44 +73,48 @@ $connection = null;
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">Pokémon Details</h4>
+                    <h4 class="display-4">products</h4>
                 </div>
             </div>
             <div class="container">
                 <div>
                     <div class="form-group">
-                        Pokémon ID #:
-                        <?= htmlspecialchars($fila['id']) ?>
+                        product id #:
+                        <?= $fila['id'] ?>
                     </div>
                     <div class="form-group">
-                        Pokémon Name:
-                        <?= htmlspecialchars($fila['name']) ?>
+                        pokemon name:
+                        <?= $fila['name'] ?>
                     </div>
                     <div class="form-group">
-                        Pokémon Weight:
-                        <?= htmlspecialchars($fila['weight']) ?>
+                        pokemon type:
+                        <?= $fila['type'] ?>
                     </div>
                     <div class="form-group">
-                        Pokémon Height:
-                        <?= htmlspecialchars($fila['height']) ?>
+                        pokemon ability:
+                        <?= $fila['ability'] ?>
                     </div>
                     <div class="form-group">
-                        Pokémon Type:
-                        <?= htmlspecialchars($fila['type']) ?>
+                        pokemon hp:
+                        <?= $fila['hp'] ?>
                     </div>
                     <div class="form-group">
-                        Pokémon Evolution:
-                        <?= htmlspecialchars($fila['evolution']) ?>
+                        pokemon attack:
+                        <?= $fila['attack'] ?>
                     </div>
                     <div class="form-group">
-                        <a href="./">Back</a>
+                        pokemon defense:
+                        <?= $fila['defense'] ?>
+                    </div>
+                    <div class="form-group">
+                        <a href="./">back</a>
                     </div>
                 </div>
                 <hr>
             </div>
         </main>
         <footer class="container">
-            <p>&copy;Daniel Fontalva</p>
+            <p>&copy; IZV 2024</p>
         </footer>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

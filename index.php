@@ -1,16 +1,17 @@
 <?php
 session_start();
+
 ?>
 <!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>PokemonApp</title>
+        <title>dwes</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="./">PokemonApp</a>
+            <a class="navbar-brand" href="./">dwes</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -20,7 +21,7 @@ session_start();
                         <a class="nav-link" href="./">home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./pokemon">pokemon</a>
+                        <a class="nav-link" href="./product">pokemons</a>
                     </li>
                 </ul>
             </div>
@@ -28,7 +29,7 @@ session_start();
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">Home</h4>
+                    <h4 class="display-4">main</h4>
                 </div>
             </div>
             <div class="container">
@@ -42,7 +43,7 @@ session_start();
                 }
                 ?>
                 <div class="row">
-                    <h3>pokemons, etc.</h3>
+                    <h3>Pokemons.</h3>
                 </div>
                 <div class="row">
                     <?php
@@ -52,20 +53,20 @@ session_start();
                         <?php
                     } else {
                         ?>
-                        <a href="user/login.php?user=even" class="btn btn-success">Log in nº Par</a>
+                        <a href="user/login.php?user=even" class="btn btn-success">log in</a>
                         &nbsp;
-                        <a href="user/login.php?user=odd" class="btn btn-success">Log in nºImpar</a>
+                       
                         <?php
                     }
                     ?>
                     &nbsp;
-                    <a href="pokemon" class="btn btn-success">Pokemons</a>
+                    <a href="./product" class="btn btn-success">pokemons</a>
                 </div>
                 <hr>
             </div>
         </main>
         <footer class="container">
-            <p>&copy; Daniel Fontalva</p>
+            <p>&copy; IZV 2024</p>
         </footer>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
