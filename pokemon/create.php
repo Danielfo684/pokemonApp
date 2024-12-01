@@ -1,18 +1,14 @@
 <?php
-// control de ssión
 session_start();
 
-// Mostrar errores para facilitar la depuración
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//redireccionar si no hay sesion
 if(!isset($_SESSION['user'])) {
     header('Location:.');
     exit;
 }
-// Lectura de datos
 $name = '';
 $weight = '';
 $height = '';
@@ -59,7 +55,7 @@ if (isset($_SESSION['old']['evolution'])) {
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">pokemon</a>
+                        <a class="nav-link" href="./">Pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -67,7 +63,7 @@ if (isset($_SESSION['old']['evolution'])) {
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">pokemons</h4>
+                    <h4 class="display-4">Pokemons</h4>
                 </div>
             </div>
             <div class="container">
@@ -97,23 +93,9 @@ if (isset($_SESSION['old']['evolution'])) {
                 <div class="form-group">
                     <label for="type">Pokemon Type</label>
                     <select required class="form-control" id="type" name="type">
-                        <option value="water">Water</option>
-                        <option value="ground">Ground</option>
-                        <option value="rock">Rock</option>
-                        <option value="fire">Fire</option>
-                        <option value="grass">Grass</option>
-                        <option value="electric">Electric</option>
-                        <option value="psychic">Psychic</option>
-                        <option value="ice">Ice</option>
-                        <option value="dragon">Dragon</option>
-                        <option value="dark">Dark</option>
-                        <option value="fairy">Fairy</option>
-                        <option value="steel">Steel</option>
-                        <option value="fighting">Fighting</option>
-                        <option value="poison">Poison</option>
-                        <option value="bug">Bug</option>
-                        <option value="ghost">Ghost</option>
-                        <option value="flying">Flying</option>
+                        <option value="agua">Agua</option>
+                        <option value="fuego">Fuego</option>
+                        <option value="planta">Planta</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -52,20 +52,20 @@ session_start();
                         <?php
                     } else {
                         ?>
-                        <a href="user/login.php?user=even" class="btn btn-success">pares log in</a>
+                        <a href="user/login.php?user=even" class="btn btn-success">Log in nº Par</a>
                         &nbsp;
-                        <a href="user/login.php?user=odd" class="btn btn-success">impares log in</a>
+                        <a href="user/login.php?user=odd" class="btn btn-success">Log in nºImpar</a>
                         <?php
                     }
                     ?>
                     &nbsp;
-                    <a href="pokemon" class="btn btn-success">pokemons</a>
+                    <a href="pokemon" class="btn btn-success">Pokemons</a>
                 </div>
                 <hr>
             </div>
         </main>
         <footer class="container">
-            <p>&copy; IZV 2024</p>
+            <p>&copy; Daniel Fontalva</p>
         </footer>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
