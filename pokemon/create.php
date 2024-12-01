@@ -8,9 +8,13 @@ if (!isset($_SESSION['user'])) {
 }
 
 // Lectura de datos, continuación del hack
-$level = '';
 $name = '';
+$level = '';
+$weight = '';
+$height = '';
+$ptype = '';
 $evolution = '';
+
 if (isset($_SESSION['old']['name'])) {
     $name = $_SESSION['old']['name'];
     unset($_SESSION['old']['name']);
@@ -19,7 +23,18 @@ if (isset($_SESSION['old']['level'])) {
     $level = $_SESSION['old']['level'];
     unset($_SESSION['old']['level']);
 }
-
+if (isset($_SESSION['old']['weight'])) {
+    $weight = $_SESSION['old']['weight'];
+    unset($_SESSION['old']['weight']);
+}
+if (isset($_SESSION['old']['height'])) {
+    $height = $_SESSION['old']['height'];
+    unset($_SESSION['old']['height']);
+}
+if (isset($_SESSION['old']['ptype'])) {
+    $ptype = $_SESSION['old']['ptype'];
+    unset($_SESSION['old']['ptype']);
+}
 if (isset($_SESSION['old']['evolution'])) {
     $evolution = $_SESSION['old']['evolution'];
     unset($_SESSION['old']['evolution']);

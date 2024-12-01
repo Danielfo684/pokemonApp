@@ -165,6 +165,18 @@ $connection = null;
                             <input value="<?= $level ?>" required type="number" step="0.001" class="form-control" id="level" name="level" placeholder="pokemon level">
                         </div>
                         <div class="form-group">
+                            <label for="weight">pokemon weight</label>
+                            <input value="<?= $weight ?>" required type="number" step="0.001" class="form-control" id="weight" name="weight" placeholder="pokemon weight">
+                        </div>
+                        <div class="form-group">
+                            <label for="height">pokemon height</label>
+                            <input value="<?= $height ?>" required type="number" step="0.001" class="form-control" id="height" name="height" placeholder="pokemon height">
+                        </div>
+                        <div class="form-group">
+                            <label for="ptype">pokemon type</label>
+                            <input value="<?= $ptype ?>" required type="text" class="form-control" id="ptype" name="ptype" placeholder="pokemon type">
+                        </div>
+                        <div class="form-group">
                             <label for="evolution">pokemon evolution</label>
                             <input value="<?= $evolution ?>" required type="text" class="form-control" id="evolution" name="evolution" placeholder="pokemon evolution">
                         </div>
