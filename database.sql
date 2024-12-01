@@ -9,7 +9,7 @@ create table pokemon (
     name VARCHAR(100) NOT NULL,
     weight FLOAT NOT NULL,
     height FLOAT NOT NULL,
-    tipo ENUM('agua', 'fuego', 'planta') NOT NULL,
+    tipo ENUM('Agua', 'Fuego', 'Planta') NOT NULL,
     evolution INT DEFAULT NULL
 ) engine=innodb default charset=utf8 collate=utf8_unicode_ci;
 

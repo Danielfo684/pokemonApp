@@ -72,14 +72,14 @@ if (!is_numeric($height) || $height < 0 || $height > 100) {
 }
 
 
-$type = strtolower(trim($_POST['type']));
-$valid_types = ['agua', 'fuego', 'planta'];
+$type = trim($_POST['type']);
+$valid_types = ['Agua', 'Fuego', 'Planta'];
 if (!in_array($type, $valid_types)) {
     $ok = false; 
 }
 
 $evolution = trim($_POST['evolution']);
-if (!empty($evolution) && (!is_numeric($evolution) || $evolution < 1 || $evolution >3)) { 
+if (!empty($evolution) && (!is_numeric($evolution) || $evolution < 1)) { 
     $ok = false;
 }
 
