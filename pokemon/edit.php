@@ -5,9 +5,14 @@ if(!isset($_SESSION['user'])) {
     header('Location:.');
     exit;
 }
-//recupero nivel, nombre y evolucion
-$level = '';
+//recupero nivel, nombre, peso, altura, tipo y evolucion
 $name = '';
+$level = '';
+$weight = '';
+$height = '';
+$ptype = '';
+$evolution = '';
+
 if(isset($_SESSION['old']['name'])) {
     $name = $_SESSION['old']['name'];
     unset($_SESSION['old']['name']);
@@ -15,6 +20,18 @@ if(isset($_SESSION['old']['name'])) {
 if(isset($_SESSION['old']['level'])) {
     $level = $_SESSION['old']['level'];
     unset($_SESSION['old']['level']);
+}
+if(isset($_SESSION['old']['weight'])) {
+    $weight = $_SESSION['old']['weight'];
+    unset($_SESSION['old']['weight']);
+}
+if(isset($_SESSION['old']['height'])) {
+    $height = $_SESSION['old']['height'];
+    unset($_SESSION['old']['height']);
+}
+if(isset($_SESSION['old']['ptype'])) {
+    $ptype = $_SESSION['old']['ptype'];
+    unset($_SESSION['old']['ptype']);
 }
 if(isset($_SESSION['old']['evolution'])) {
     $evolution = $_SESSION['old']['evolution'];
@@ -74,6 +91,15 @@ if($name == '') {
 }
 if($level == '') {
     $level = $fila['level'];
+}
+if($weight == '') {
+    $weight = $fila['weight'];
+}
+if($height == '') {
+    $height = $fila['height'];
+}
+if($ptype == '') {
+    $ptype = $fila['ptype'];
 }
 if($evolution == '') {
     $evolution = $fila['evolution'];
