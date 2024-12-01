@@ -6,9 +6,9 @@ if(!isset($_SESSION['user'])) {
 }
 try {
     $connection = new \PDO(
-      'mysql:host=localhost;dbname=productdatabase',
-      'productuser',
-      'productpassword',
+      'mysql:host=localhost;dbname=pokemondatabase',
+      'pokemontrainer',
+      'pokemonpassword',
       array(
         PDO::ATTR_PERSISTENT => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
@@ -23,7 +23,7 @@ if(isset($_GET['id'])) {
     echo 'no id';
     exit;
 }
-$sql = 'delete from product where id = :id';
+$sql = 'delete from pokemon where id = :id';
 $sentence = $connection->prepare($sql);
 $parameters = ['id' => $id];
 foreach($parameters as $nombreParametro => $valorParametro) {
@@ -35,5 +35,5 @@ if(!$sentence->execute()){
 }
 $resultado = $sentence->rowCount();
 $connection = null;
-$url = '.?op=deleteproduct&result=' . $resultado;
+$url = '.?op=deletepokemon&result=' . $resultado;
 header('Location: ' . $url);
