@@ -14,11 +14,11 @@ create table pokemon (
     evolution INT DEFAULT NULL
 ) engine=innodb default charset=utf8 collate=utf8_unicode_ci;
 
-create user 'pokemonuser'@'localhost'
+create user 'pokemonuser2'@'localhost'
     identified by 'root';
 
 grant all
     on pokemondatabase.*
-    to pokemonuser@localhost;
+    to pokemonuser2@localhost;
 
 flush privileges;
