@@ -11,9 +11,9 @@ if (!isset($_SESSION['user'])) {
 
 try {
     $connection = new PDO(
-      'mysql:host=localhost;dbname=pokemons',
-      'pokeuser',
-      'Pokepassword1234#',
+      'mysql:host=localhost;dbname=pokemondatabase',
+      'pokemonuser2',
+      'root',
      
       array(
         PDO::ATTR_PERSISTENT => true,

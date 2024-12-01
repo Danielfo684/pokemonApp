@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 try {
     $connection = new PDO(
       'mysql:host=localhost;dbname=pokemons',
-      'pokeuser',
-      'Pokepassword1234#',
+      'pokemonuser2',
+      'root',
      
       array(
         PDO::ATTR_PERSISTENT => true,
