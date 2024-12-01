@@ -31,7 +31,7 @@ $resultado = 0;
 $url = 'create.php?op=insertpokemon&result=' . $resultado;
 
 // Compruebo que los datos obligatorios: nombre y nivel, estén presentes
-if (isset($_POST['name']) && isset($_POST['level']) && isset($_POST['evolution']) && $_POST['weight'] && isset($_POST['height']) && isset($_POST['ptype'])) {
+if (isset($_POST['name']) && isset($_POST['level']) && isset($_POST['evolution']) && isset($_POST['weight']) && isset($_POST['height']) && isset($_POST['ptype'])) {
     $name = $_POST['name'];
     $level = $_POST['level'];
     $weight = $_POST['weight'];
@@ -89,7 +89,7 @@ if (isset($_POST['name']) && isset($_POST['level']) && isset($_POST['evolution']
             $resultado = $connection->lastInsertId();
             $url = 'index.php?op=insertpokemon&result=' . $resultado;
         } catch (PDOException $e) {
-
+            $url = 'create.php?op=insertpokemon&result=0';
         }
     }
 }

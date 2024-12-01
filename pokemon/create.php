@@ -122,6 +122,7 @@ if (isset($_SESSION['old']['evolution'])) {
                         <label for="evolution">pokemon evolution</label>
                         <input value="<?= $evolution ?>" required type="number" class="form-control" id="evolution"
                             name="evolution" placeholder="pokemon evolution">
+                    <script></script>
                     </div>
                     <button type="submit" class="btn btn-primary">add</button>
                 </form>
