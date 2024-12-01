@@ -1,3 +1,4 @@
+drop database pokemondatabase;
 create database pokemondatabase
     default character set utf8
     collate utf8_unicode_ci;
@@ -9,11 +10,11 @@ create table pokemon (
     name VARCHAR(100) NOT NULL,
     weight FLOAT NOT NULL,
     height FLOAT NOT NULL,
-    tipo ENUM('Agua', 'Fuego', 'Planta') NOT NULL,
+    type ENUM('water', 'fire', 'grass') NOT NULL,
     evolution INT DEFAULT NULL
 ) engine=innodb default charset=utf8 collate=utf8_unicode_ci;
 
-create user pokemonuser@localhost
+create user 'pokemonuser'@'localhost'
     identified by 'root';
 
 grant all

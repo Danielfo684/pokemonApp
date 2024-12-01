@@ -93,9 +93,9 @@ if (isset($_SESSION['old']['evolution'])) {
                 <div class="form-group">
                     <label for="type">Pokemon Type</label>
                     <select required class="form-control" id="type" name="type">
-                        <option value="agua">Agua</option>
-                        <option value="fuego">Fuego</option>
-                        <option value="planta">Planta</option>
+                        <option value="agua">water</option>
+                        <option value="fuego">fire</option>
+                        <option value="planta">grass</option>
                     </select>
                 </div>
                 <div class="form-group">
