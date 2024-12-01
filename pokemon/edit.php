@@ -1,28 +1,38 @@
 <?php
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
+//compruebo sesión
 session_start();
 if(!isset($_SESSION['user'])) {
     header('Location:.');
     exit;
 }
-$user = $_SESSION['user'];
-
+//recupero nivel, nombre y evolucion
+$level = '';
+$name = '';
+if(isset($_SESSION['old']['name'])) {
+    $name = $_SESSION['old']['name'];
+    unset($_SESSION['old']['name']);
+}
+if(isset($_SESSION['old']['level'])) {
+    $level = $_SESSION['old']['level'];
+    unset($_SESSION['old']['level']);
+}
+if(isset($_SESSION['old']['evolution'])) {
+    $evolution = $_SESSION['old']['evolution'];
+    unset($_SESSION['old']['evolution']);
+}
+//establecer conexión bd
 try {
-    $connection = new PDO(
-      'mysql:host=localhost;dbname=pokemons',
-      'pokemonuser2',
-      'root',
-      
+    $connection = new \PDO(
+      'mysql:host=localhost;dbname=pokemondatabase',
+      'pokemontrainer',
+      'pokemonpassword',
       array(
         PDO::ATTR_PERSISTENT => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
-        
     );
 } catch(PDOException $e) {
-    header('Location:..');
+    //echo 'no connection';
+    header('Location: .'); // habría que dar explicaciones
     exit;
 }
 
@@ -33,7 +43,16 @@ if(isset($_GET['id'])) {
     header('Location: ' . $url);
     exit;
 }
+// Control
+$user = null;
+if(isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+}
 
+if (($user == 'even' && $id % 2 != 0) || 
+    ($user == 'odd' && $id % 2 == 0)) {
+        header('Location: .');
+}
 
 $sql = 'select * from pokemon where id = :id';
 $sentence = $connection->prepare($sql);
@@ -41,85 +60,36 @@ $parameters = ['id' => $id];
 foreach($parameters as $nombreParametro => $valorParametro) {
     $sentence->bindValue($nombreParametro, $valorParametro);
 }
-
-try {
-    $sentence->execute();
-    $row = $sentence->fetch();
-} catch(PDOException $e) {
-    header('Location:.');
+if(!$sentence->execute()){
+    echo 'no sql';
     exit;
 }
-
-if($row == null) {
-    header('Location: .');
+if(!$fila = $sentence->fetch()) {
+    echo 'no data';
     exit;
 }
-
-$name = '';
-$type = '';
-$ability = '';
-$hp = '';
-$attack = '';
-$defense = '';
-
-if(isset($_SESSION['old']['name'])) {
-    $name = $_SESSION['old']['name'];
-    unset($_SESSION['old']['name']);
-}
-if(isset($_SESSION['old']['type'])) {
-    $type = $_SESSION['old']['type'];
-    unset($_SESSION['old']['type']);
-}
-if(isset($_SESSION['old']['ability'])) {
-    $ability = $_SESSION['old']['ability'];
-    unset($_SESSION['old']['ability']);
-}
-if(isset($_SESSION['old']['hp'])) {
-    $hp = $_SESSION['old']['hp'];
-    unset($_SESSION['old']['hp']);
-}
-if(isset($_SESSION['old']['attack'])) {
-    $attack = $_SESSION['old']['attack'];
-    unset($_SESSION['old']['attack']);
-}
-if(isset($_SESSION['old']['defense'])) {
-    $defense = $_SESSION['old']['defense'];
-    unset($_SESSION['old']['defense']);
-}
-
-
-$id = $row['id'];
+$id = $fila['id'];
 if($name == '') {
-    $name = $row['name'];
+    $name = $fila['name'];
 }
-if($type == '') {
-    $type = $row['type'];
+if($level == '') {
+    $level = $fila['level'];
 }
-if($ability == '') {
-    $ability = $row['ability'];
+if($evolution == '') {
+    $evolution = $fila['evolution'];
 }
-if($hp == '') {
-    $hp = $row['hp'];
-}
-if($attack == '') {
-    $attack = $row['attack'];
-}
-if($defense == '') {
-    $defense = $row['defense'];
-}
-
 $connection = null;
 ?>
 <!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>dwes</title>
+        <title>Pokemon</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="..">dwes</a>
+            <a class="navbar-brand" href="..">Pokemon</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -129,7 +99,7 @@ $connection = null;
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">pokemons</a>
+                        <a class="nav-link" href="./">Pokemons</a>
                     </li>
                 </ul>
             </div>
@@ -137,7 +107,7 @@ $connection = null;
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">pokemonss</h4>
+                    <h4 class="display-4">Pokemons</h4>
                 </div>
             </div>
             <div class="container">
@@ -158,33 +128,20 @@ $connection = null;
                         }
                 }
                 ?>
-                <div>
+                <div0>
                     <form action="update.php" method="post">
                         <div class="form-group">
-                            <label for="name">pokemons name</label>
+                            <label for="name">pokemon name</label>
                             <input value="<?= $name ?>" required type="text" class="form-control" id="name" name="name" placeholder="pokemon name">
                         </div>
                         <div class="form-group">
-                            <label for="type">pokemons type</label>
-                            <input value="<?= $type ?>" required type="text" class="form-control" id="type" name="type" placeholder="pokemon type">
+                            <label for="level">pokemon level</label>
+                            <input value="<?= $level ?>" required type="number" step="0.001" class="form-control" id="level" name="level" placeholder="pokemon level">
                         </div>
                         <div class="form-group">
-                            <label for="ability">pokemons ability</label>
-                            <input value="<?= $ability ?>" required type="text" class="form-control" id="ability" name="ability" placeholder="pokemon ability">
+                            <label for="evolution">pokemon evolution</label>
+                            <input value="<?= $evolution ?>" required type="text" class="form-control" id="evolution" name="evolution" placeholder="pokemon evolution">
                         </div>
-                        <div class="form-group">
-                            <label for="hp">pokemons ability</label>
-                            <input value="<?= $hp ?>" required type="text" class="form-control" id="hp" name="hp" placeholder="pokemon hp">
-                        </div>
-                        <div class="form-group">
-                            <label for="attack">pokemons attack</label>
-                            <input value="<?= $attack ?>" required type="text" class="form-control" id="attack" name="attack" placeholder="pokemon attack">
-                        </div>
-                        <div class="form-group">
-                            <label for="defense">pokemons defense</label>
-                            <input value="<?= $defense ?>" required type="text" class="form-control" id="defense" name="defense" placeholder="pokemon defense">
-                        </div>
-
                         <input type="hidden" name="id" value="<?= $id ?>" />
                         <button type="submit" class="btn btn-primary">edit</button>
                     </form>
